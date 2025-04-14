@@ -1,0 +1,27 @@
+services:
+  postgres:
+    image: postgres:15
+    container_name: postgres_db
+    restart: always
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  app:
+    build: .
+    container_name: pvz_app
+    restart: always
+    depends_on:
+      - postgres
+    environment:
+      DATABASE_URL: postgres://user:password@postgres:5432/postgres_db?sslmode=disable
+    ports:
+      - "8080:8080"
+
+volumes:
+  postgres_data:
