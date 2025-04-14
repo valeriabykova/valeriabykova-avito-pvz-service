@@ -26,12 +26,6 @@ func main() {
 	}
 	defer pool.Close()
 
-	var count int
-	err = pool.QueryRow(context.Background(), `SELECT COUNT(*) from users`).Scan(&count)
-	if err != nil {
-		panic(err)
-	}
-
 	authRepo := auth_repository.New(pool)
 	jwtHelper := jwt.New("aboba")
 	authService := auth_service.New(authRepo, jwtHelper)
